@@ -1,48 +1,29 @@
 import 'dart:ui';
+import 'package:application_shoe_ecommerce/module/domain/entities/shoe.dart';
+import 'package:application_shoe_ecommerce/module/presentation/cubit/category_cubit.dart';
+import 'package:application_shoe_ecommerce/module/presentation/cubit/category_state.dart';
+import 'package:application_shoe_ecommerce/module/presentation/cubit/shoe_cubit.dart';
+import 'package:application_shoe_ecommerce/module/presentation/cubit/shoe_state.dart';
 import 'package:application_shoe_ecommerce/module/presentation/screen/login_creen/login_screen.dart';
+import 'package:application_shoe_ecommerce/module/presentation/widget/banner_widget.dart';
+import 'package:application_shoe_ecommerce/module/resources/app_color.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const K_PRIMARY_RED = Color(0xFFB71C1C); // Đỏ chủ đạo
-const K_LIGHT_RED = Color(0xFFFFF0F0); // Đỏ nhạt nền
-const K_TEXT_GREY = Color(0xFF757575); // Xám chữ mô tả
-
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int selectedIndex = 0;
+  int currentBanner = 0;
+  @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> categories = [
-      {"name": "Sneakers", "iconPath": "assets/img/icon_sneaker.png"},
-      {"name": "Sports", "iconPath": "assets/img/icon_sport.png"},
-      {"name": "Casual", "iconPath": "assets/img/icon_casual.png"},
-      {"name": "Running", "iconPath": "assets/img/icon_running.png"},
-      {"name": "Hiking", "iconPath": "assets/img/icon_hiking.png"},
-    ];
-
-    final List<Map<String, dynamic>> products = [
-      {
-        "name": "Nike Air Max 270",
-        "price": 150.00,
-        "imagePath": "assets/img/shoe_nike.png",
-      },
-      {
-        "name": "Adidas Ultraboost 22",
-        "price": 180.00,
-        "imagePath": "assets/img/shoe_adidas.png",
-      },
-      {
-        "name": "New Balance 327",
-        "price": 120.00,
-        "imagePath": "assets/img/shoe_nb.png",
-      },
-      {
-        "name": "Puma Rider",
-        "price": 110.00,
-        "imagePath": "assets/img/shoe_puma.png",
-      },
-    ];
-
     return Scaffold(
       extendBody: true,
       backgroundColor: Colors.white,
@@ -51,7 +32,7 @@ class MainScreen extends StatelessWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
-        backgroundColor: K_PRIMARY_RED,
+        backgroundColor: AppColors.primaryRed,
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: Padding(
@@ -92,102 +73,270 @@ class MainScreen extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 100),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [_buildSearchBar(), _buildFlashSaleBanner()],
-          ),
-        ),
-      ),
-      // BOTTOM NAVIGATION BAR
-    );
-  }
-
-  // WIDGET HELPER FUNCTIONS
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(25),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.search, color: K_TEXT_GREY),
-            const SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "Search for shoes, brands...",
-                  hintStyle: GoogleFonts.poppins(color: K_TEXT_GREY),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // 3.2. WIDGET BANNER KHUYẾN MÃI
-  Widget _buildFlashSaleBanner() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Container(
-        height: 180,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: K_PRIMARY_RED,
-          borderRadius: BorderRadius.circular(20),
-          image: const DecorationImage(
-            image: AssetImage("assets/img/shoe_banner2.png"),
-            fit: BoxFit.contain,
-            alignment: Alignment.centerRight,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "SUMMER FLASH SALE!",
-                style: GoogleFonts.poppins(
-                  color: Colors.white.withValues(alpha: 0.8),
-                  fontSize: 12,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                "UP TO\n50% OFF",
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  height: 1.1,
-                ),
-              ),
-              const SizedBox(height: 10),
-              // Nút Shop Now
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Text(
-                  "Shop Now",
-                  style: GoogleFonts.poppins(
-                    color: K_PRIMARY_RED,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
+              //Banner
+              CarouselSlider(
+                items: [
+                  // item 1
+                  BannerWidget(
+                    title: 'SUMMER FLASH SALE!',
+                    subtitle: 'UP TO \n50% OFF',
+                    imagePath: 'assets/img/shoe_banner2.png',
                   ),
+                  // item 2
+                  BannerWidget(
+                    title: 'LAUNCHING THE NEW SUPER SHOE',
+                    subtitle: '20% OFF \nFIRST 100 ORDERS ONLY',
+                    imagePath: 'assets/img/shoe_banner.png',
+                    subtitleSize: 20,
+                  ),
+                ],
+                options: CarouselOptions(
+                  height: 210,
+                  viewportFraction: 1,
+                  padEnds: true,
+                  enableInfiniteScroll: false,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      currentBanner = index;
+                    });
+                  },
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(2, (index) {
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: currentBanner == index ? 20 : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: currentBanner == index
+                          ? AppColors.primaryRed
+                          : Colors.grey.shade400,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  );
+                }),
+              ),
+              // danh mục Sản phẩm
+              Padding(
+                padding: EdgeInsetsGeometry.fromLTRB(20, 0, 0, 0),
+                child: Text(
+                  "CATEGORY",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              BlocBuilder<CategoryCubit, CategoryState>(
+                builder: (context, state) {
+                  if (state is CategoryLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is CategoryError) {
+                    return Center(child: Text(state.message));
+                  } else if (state is CategoryLoaded) {
+                    final categories = state.categories;
+
+                    return SizedBox(
+                      height: 90,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          bool isSelected = selectedIndex == index;
+                          final item = categories[index];
+
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = index;
+                              });
+                            },
+                            child: Container(
+                              width: 75,
+                              margin: const EdgeInsets.only(right: 15),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? const Color(0xFFB71C1C)
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.2),
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 5),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    item.icon,
+                                    width: 55,
+                                    height: 55,
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.black54,
+                                    colorBlendMode: BlendMode.srcIn,
+                                  ),
+                                  const SizedBox(height: 1),
+                                  Text(
+                                    item.name,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
+              SizedBox(height: 20),
+              //sản phẩm phổ biến
+              Padding(
+                padding: EdgeInsetsGeometry.fromLTRB(20, 0, 0, 0),
+                child: Text(
+                  "FEATURED SHOE",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(height: 20),
+              BlocBuilder<ShoeCubit, ShoeState>(
+                builder: (context, state) {
+                  if (state is ShoeLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ShoeError) {
+                    return Center(child: Text(state.message));
+                  } else if (state is ShoeLoaded) {
+                    final featuredShoes = state.shoes;
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: featuredShoes.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 16,
+                      ),
+                      itemBuilder: (context, index) {
+                        final shoe = featuredShoes[index];
+                        return Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Hình ảnh sản phẩm
+                                      Expanded(
+                                        child: Center(
+                                          child: Image.asset(
+                                            shoe.image,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      // Tên sản phẩm
+                                      Text(
+                                        shoe.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      // Giá sản phẩm
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "\$${shoe.price.toStringAsFixed(2)}",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          // Nút thêm vào giỏ hàng
+                                          Icon(
+                                            Icons.shopping_cart_outlined,
+                                            color: AppColors.primaryRed,
+                                            size: 20,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return SizedBox();
+                },
+              ),
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 50,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryRed,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Xem Thêm",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

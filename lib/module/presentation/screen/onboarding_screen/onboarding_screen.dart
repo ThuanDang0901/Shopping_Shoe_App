@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:application_shoe_ecommerce/module/presentation/screen/main_screen/main_screen.dart';
+import 'package:application_shoe_ecommerce/module/presentation/screen/main_screen/main_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -81,7 +82,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                         child: Container(
                           width: 320,
-                          height: 320,
+                          height: 420,
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.05),
                             borderRadius: BorderRadius.circular(30),
@@ -91,7 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             ),
                           ),
                           child: Image.asset(
-                            "assets/img/vdv.png",
+                            "assets/img/vdvcn.png",
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -139,7 +140,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   child: GestureDetector(
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MainScreen()),
+                      MaterialPageRoute(builder: (context) => MainWrapper()),
                     ),
                     child: Container(
                       width: double.infinity,

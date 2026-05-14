@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:application_shoe_ecommerce/module/presentation/screen/main_screen/main_screen.dart';
+import 'package:application_shoe_ecommerce/module/presentation/screen/main_screen/main_wrapper.dart';
 import 'package:application_shoe_ecommerce/module/presentation/widget/text_form_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -121,7 +123,12 @@ class VerifyAccount extends StatelessWidget {
                               // Nút Verify
                               GestureDetector(
                                 onTap: () {
-                                  // Xử lý verify
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MainWrapper(),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   width: double.infinity,

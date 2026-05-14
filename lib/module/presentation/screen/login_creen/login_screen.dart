@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:application_shoe_ecommerce/module/presentation/screen/main_screen/main_screen.dart';
+import 'package:application_shoe_ecommerce/module/presentation/screen/main_screen/main_wrapper.dart';
 import 'package:application_shoe_ecommerce/module/presentation/screen/sign_up_screen/signup_screen.dart';
 import 'package:application_shoe_ecommerce/module/presentation/widget/login_with_Social_widget.dart';
 import 'package:application_shoe_ecommerce/module/presentation/widget/text_form_field_widget.dart';
@@ -42,7 +43,7 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // Thương Hiệu
-                  SizedBox(height: 40),
+                  SizedBox(height: 10),
                   Column(
                     children: [
                       Image.asset("assets/img/logo_AUNORA.png", scale: 8),
@@ -171,7 +172,7 @@ class LoginScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => MainScreen(),
+                                      builder: (context) => MainWrapper(),
                                     ),
                                   );
                                 },

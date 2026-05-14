@@ -40,7 +40,7 @@ class SignupScreen extends StatelessWidget {
               child: Column(
                 children: [
                   // Thương Hiệu
-                  SizedBox(height: 40),
+                  SizedBox(height: 10),
                   Column(
                     children: [
                       Image.asset("assets/img/logo_AUNORA.png", scale: 8),
