@@ -15,8 +15,8 @@ Backend: Firebase Auth, Cloud Firestore
 
 Các Hình Ảnh Demo Của App AUNORA:
 <p align="center">
-  <img src="assets/img/Shoe_Demo/logn.png" width="150"/>
   <img src="assets/img/Shoe_Demo/onboarding.png" width="150"/>
+  <img src="assets/img/Shoe_Demo/logn.png" width="150"/>
   <img src="assets/img/Shoe_Demo/register.png" width="150"/>
   <img src="assets/img/Shoe_Demo/verity_account.png" width="150"/>
   <img src="assets/img/Shoe_Demo/mainscreen.png" width="150"/>
