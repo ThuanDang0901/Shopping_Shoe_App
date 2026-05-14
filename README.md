@@ -1,16 +1,23 @@
-# application_shoe_ecommerce
+App Shopping Shoe (AUNORA)
+Ngày Thực hiện: 5/4/2026 --> Chưa Xong
 
-A new Flutter project.
+AUNORA là một ứng dụng di động thương mại điện tử chuyên về giày dép, được xây dựng bằng Flutter và Firebase. 
+Ứng dụng tuân thủ nguyên tắc Clean Architecture và sử dụng BLoC/Cubit để quản lý trạng thái (State Management), đảm bảo tính mở rộng và dễ bảo trì.
+Công nghệ sử dụng: 
 
-## Getting Started
+Framework: Flutter
 
-This project is a starting point for a Flutter application.
+Ngôn ngữ: Dart
 
-A few resources to get you started if this is your first Flutter project:
+Quản lý trạng thái: Flutter BLoC (Cubit)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Backend: Firebase Auth, Cloud Firestore
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Các Hình Ảnh Demo Của App AUNORA:
+<p align="center">
+  <img src="assets/image/Demo/logn.png" width="150"/>
+  <img src="assets/image/Demo/mainscreen.png" width="150"/>
+  <img src="assets/image/Demo/onboarding.png" width="150"/>
+  <img src="assets/image/Demo/register.png" width="150"/>
+  <img src="assets/image/Demo/verity_account.png" width="150"/>
+</p>
