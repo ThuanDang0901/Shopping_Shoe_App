@@ -12,6 +12,8 @@ class ShoeModel extends Shoe {
     required super.stockQuantity,
     required super.category,
     required super.isActive,
+    required super.colors,
+    required super.sizes,
   });
 
   factory ShoeModel.fromMap(Map<String, dynamic> map, String docId) {
@@ -26,6 +28,8 @@ class ShoeModel extends Shoe {
       soldCount: map['soldCount'] ?? 0,
       category: map['category'] ?? '',
       isActive: map['isActive'] ?? true,
+      colors: List<String>.from(map['colors'] ?? []),
+      sizes: List<int>.from(map['sizes'] ?? []),
     );
   }
 }

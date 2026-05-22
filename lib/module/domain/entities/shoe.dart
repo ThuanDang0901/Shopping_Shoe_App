@@ -9,6 +9,9 @@ class Shoe {
   final int soldCount;
   final String category;
   final bool isActive;
+  final List<String> colors;
+  final List<int> sizes;
+  bool isFavorite;
 
   Shoe({
     required this.id,
@@ -21,5 +24,8 @@ class Shoe {
     required this.stockQuantity,
     required this.category,
     required this.isActive,
+    required this.colors,
+    required this.sizes,
+    this.isFavorite = false,
   });
 }

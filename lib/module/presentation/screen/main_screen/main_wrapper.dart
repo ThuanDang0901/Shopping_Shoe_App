@@ -17,9 +17,9 @@ class _MainWrapperState extends State<MainWrapper> {
   int _selectedPageIndex = 0;
   static const List<Widget> _pages = <Widget>[
     MainScreen(),
-    CartScreen(),
-    Searchscreen(),
     WishlistCreen(),
+    Searchscreen(),
+    CartScreen(),
     ProfileScreen(),
   ];
 

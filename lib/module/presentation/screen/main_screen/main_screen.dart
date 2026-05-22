@@ -1,9 +1,12 @@
 import 'dart:ui';
 import 'package:application_shoe_ecommerce/module/domain/entities/shoe.dart';
+import 'package:application_shoe_ecommerce/module/presentation/cubit/auth_cubit.dart';
+import 'package:application_shoe_ecommerce/module/presentation/cubit/auth_state.dart';
 import 'package:application_shoe_ecommerce/module/presentation/cubit/category_cubit.dart';
 import 'package:application_shoe_ecommerce/module/presentation/cubit/category_state.dart';
 import 'package:application_shoe_ecommerce/module/presentation/cubit/shoe_cubit.dart';
 import 'package:application_shoe_ecommerce/module/presentation/cubit/shoe_state.dart';
+import 'package:application_shoe_ecommerce/module/presentation/screen/detail_screen.dart/detail_creen.dart';
 import 'package:application_shoe_ecommerce/module/presentation/screen/login_creen/login_screen.dart';
 import 'package:application_shoe_ecommerce/module/presentation/widget/banner_widget.dart';
 import 'package:application_shoe_ecommerce/module/resources/app_color.dart';
@@ -26,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         toolbarHeight: 70,
         shape: const RoundedRectangleBorder(
@@ -50,19 +53,45 @@ class _MainScreenState extends State<MainScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
+            padding: EdgeInsets.only(right: 15),
+            child: BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                if (state is AuthSuccess) {
+                  return GestureDetector(
+                    onTap: () {
+                      // thực hiện chức năng gì đó ở trang profile
+                    },
+                    child: const CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.white24,
+                      child: Icon(Icons.person, color: Colors.white),
+                    ),
+                  );
+                }
+                return TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.white.withValues(alpha: 0.2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  ),
+                  child: Text(
+                    "Login",
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 );
               },
-              child: const CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.white24,
-                child: Icon(Icons.person, color: Colors.white),
-              ),
             ),
           ),
         ],
@@ -250,59 +279,74 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                               ],
                             ),
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      // Hình ảnh sản phẩm
-                                      Expanded(
-                                        child: Center(
-                                          child: Image.asset(
-                                            shoe.image,
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      // Tên sản phẩm
-                                      Text(
-                                        shoe.name,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      // Giá sản phẩm
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "\$${shoe.price.toStringAsFixed(2)}",
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        DetailCreen(shoe: shoe),
+                                  ),
+                                );
+                              },
+                              child: Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // 👇 HERO CHỈ BỌC ẢNH
+                                        Expanded(
+                                          child: Center(
+                                            child: Hero(
+                                              tag: shoe.name,
+                                              child: Image.asset(
+                                                shoe.image,
+                                                fit: BoxFit.contain,
+                                              ),
                                             ),
                                           ),
-                                          // Nút thêm vào giỏ hàng
-                                          Icon(
-                                            Icons.shopping_cart_outlined,
-                                            color: AppColors.primaryRed,
-                                            size: 20,
+                                        ),
+
+                                        const SizedBox(height: 8),
+
+                                        Text(
+                                          shoe.name,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                        ),
+
+                                        const SizedBox(height: 4),
+
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "${shoe.price.toInt().toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]}.')}đ",
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.shopping_cart_outlined,
+                                              color: AppColors.primaryRed,
+                                              size: 20,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );
