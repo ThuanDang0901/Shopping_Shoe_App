@@ -1,7 +1,10 @@
 import 'dart:ui';
 
+import 'package:application_shoe_ecommerce/module/presentation/cubit/admin_revenue_cubit.dart';
 import 'package:application_shoe_ecommerce/module/presentation/cubit/auth_cubit.dart';
 import 'package:application_shoe_ecommerce/module/presentation/cubit/auth_state.dart';
+import 'package:application_shoe_ecommerce/module/presentation/screen/admin_main_board/admin_main_board.dart';
+import 'package:application_shoe_ecommerce/module/presentation/screen/admin_main_board/admin_wrapper.dart';
 import 'package:application_shoe_ecommerce/module/presentation/screen/main_screen/main_screen.dart';
 import 'package:application_shoe_ecommerce/module/presentation/screen/main_screen/main_wrapper.dart';
 import 'package:application_shoe_ecommerce/module/presentation/screen/sign_up_screen/signup_screen.dart';
@@ -26,11 +29,20 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => MainWrapper()),
-            (route) => false,
-          );
+          if (state.user.role == 'admin') {
+            context.read<AdminRevenueCubit>().fetchRevenue();
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const AdminWrapper()),
+              (route) => false,
+            );
+          } else {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => MainWrapper()),
+              (route) => false,
+            );
+          }
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -96,214 +108,220 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       // Thẻ Bóng
                       SizedBox(height: 40),
-                      Center(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                            child: Container(
-                              width: 360,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 25,
-                                vertical: 40,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.3),
-                                  width: 1.5,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                              child: Container(
+                                width: 360,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 25,
+                                  vertical: 40,
                                 ),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.white.withValues(alpha: 0.15),
-                                    Colors.white.withValues(alpha: 0.05),
-                                  ],
-                                ),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  //Nhập EMAIL
-                                  TextFormFieldWidget(
-                                    hintText: "E-mail",
-                                    controller: _emailController,
-                                    prefixIcon: Icons.email_outlined,
-                                    keyboardType: TextInputType.emailAddress,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: Colors.white.withValues(alpha: 0.3),
+                                    width: 1.5,
                                   ),
-                                  SizedBox(height: 25),
-                                  //Nhập Password
-                                  TextFormFieldWidget(
-                                    hintText: "Password",
-                                    controller: _passwordController,
-                                    prefixIcon: Icons.lock_outline,
-                                    isPassword: true,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 24,
-                                            width: 24,
-                                            child: Checkbox(
-                                              value: false,
-                                              onChanged: (value) {
-                                                //Xử lý sự kiện
-                                              },
-                                              activeColor: Color(0xFFEC5353),
-                                              side: BorderSide(
-                                                color: Colors.white70,
-                                              ),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            "Remember me",
-                                            style: GoogleFonts.poppins(
-                                              color: Colors.white70,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      //Forgot Password?
-                                      GestureDetector(
-                                        onTap: () {
-                                          // xử lý sự kiện
-                                        },
-                                        child: Text(
-                                          "Forgot Password?",
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            decorationColor: Colors.white,
-                                            decorationThickness: 2,
-                                          ),
-                                        ),
-                                      ),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Colors.white.withValues(alpha: 0.15),
+                                      Colors.white.withValues(alpha: 0.05),
                                     ],
                                   ),
-                                  SizedBox(height: 30),
-                                  //Nút Login
-                                  GestureDetector(
-                                    onTap: state is AuthLoading
-                                        ? null
-                                        : () {
-                                            final email = _emailController.text
-                                                .trim();
-                                            final password = _passwordController
-                                                .text
-                                                .trim();
-                                            if (email.isEmpty ||
-                                                password.isEmpty) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    "Vui Lòng Nhập Thông Tin Đăng Nhập Của Bạn !",
-                                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    //Nhập EMAIL
+                                    TextFormFieldWidget(
+                                      hintText: "E-mail",
+                                      controller: _emailController,
+                                      prefixIcon: Icons.email_outlined,
+                                      keyboardType: TextInputType.emailAddress,
+                                    ),
+                                    SizedBox(height: 25),
+                                    //Nhập Password
+                                    TextFormFieldWidget(
+                                      hintText: "Password",
+                                      controller: _passwordController,
+                                      prefixIcon: Icons.lock_outline,
+                                      isPassword: true,
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 24,
+                                              width: 24,
+                                              child: Checkbox(
+                                                value: false,
+                                                onChanged: (value) {
+                                                  //Xử lý sự kiện
+                                                },
+                                                activeColor: Color(0xFFEC5353),
+                                                side: BorderSide(
+                                                  color: Colors.white70,
                                                 ),
-                                              );
-                                            } else if (email.isNotEmpty &&
-                                                password.isNotEmpty) {
-                                              context.read<AuthCubit>().login(
-                                                email,
-                                                password,
-                                              );
-                                            }
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              "Remember me",
+                                              style: GoogleFonts.poppins(
+                                                color: Colors.white70,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        //Forgot Password?
+                                        GestureDetector(
+                                          onTap: () {
+                                            // xử lý sự kiện
                                           },
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 55,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFEC5353),
-                                        borderRadius: BorderRadius.circular(15),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color(
-                                              0xFFEC5353,
-                                            ).withValues(alpha: 0.5),
-                                            blurRadius: 20,
-                                            offset: Offset(0, 10),
+                                          child: Text(
+                                            "Forgot Password?",
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              decorationColor: Colors.white,
+                                              decorationThickness: 2,
+                                            ),
                                           ),
-                                        ],
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "SIGN IN",
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 30),
+                                    //Nút Login
+                                    GestureDetector(
+                                      onTap: state is AuthLoading
+                                          ? null
+                                          : () {
+                                              final email = _emailController
+                                                  .text
+                                                  .trim();
+                                              final password =
+                                                  _passwordController.text
+                                                      .trim();
+                                              if (email.isEmpty ||
+                                                  password.isEmpty) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      "Vui Lòng Nhập Thông Tin Đăng Nhập Của Bạn !",
+                                                    ),
+                                                  ),
+                                                );
+                                              } else if (email.isNotEmpty &&
+                                                  password.isNotEmpty) {
+                                                context.read<AuthCubit>().login(
+                                                  email,
+                                                  password,
+                                                );
+                                              }
+                                            },
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFFEC5353),
+                                          borderRadius: BorderRadius.circular(
+                                            15,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(
+                                                0xFFEC5353,
+                                              ).withValues(alpha: 0.5),
+                                              blurRadius: 20,
+                                              offset: Offset(0, 10),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "SIGN IN",
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.white24,
-                                          thickness: 1,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                        ),
-                                        child: Text(
-                                          "OR SIGN IN WITH",
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white60,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600,
-                                            letterSpacing: 1.2,
+                                    SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Divider(
+                                            color: Colors.white24,
+                                            thickness: 1,
                                           ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        child: Divider(
-                                          color: Colors.white24,
-                                          thickness: 1,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                          ),
+                                          child: Text(
+                                            "OR SIGN IN WITH",
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white60,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 1.2,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      // Nút Google
-                                      LoginWithSocialWidget(
-                                        label: "Google",
-                                        iconPath: "assets/img/icon_gg.png",
-                                        onTap: () {},
-                                      ),
-                                      const SizedBox(width: 15),
-                                      // Nút Facebook
-                                      LoginWithSocialWidget(
-                                        label: "Facebook",
-                                        iconPath:
-                                            "assets/img/logo_facebook.png",
-                                        onTap: () {},
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        Expanded(
+                                          child: Divider(
+                                            color: Colors.white24,
+                                            thickness: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        // Nút Google
+                                        LoginWithSocialWidget(
+                                          label: "Google",
+                                          iconPath: "assets/img/icon_gg.png",
+                                          onTap: () {},
+                                        ),
+                                        const SizedBox(width: 15),
+                                        // Nút Facebook
+                                        LoginWithSocialWidget(
+                                          label: "Facebook",
+                                          iconPath:
+                                              "assets/img/logo_facebook.png",
+                                          onTap: () {},
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -328,6 +346,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 30),
                     ],
                   ),
                 ),

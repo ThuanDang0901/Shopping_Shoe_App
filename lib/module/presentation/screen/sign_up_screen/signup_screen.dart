@@ -95,141 +95,146 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       // Thẻ Bóng
                       SizedBox(height: 40),
-                      Center(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                            child: Container(
-                              width: 360,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 25,
-                                vertical: 40,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.3),
-                                  width: 1.5,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                              child: Container(
+                                width: 360,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 25,
+                                  vertical: 40,
                                 ),
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.white.withValues(alpha: 0.15),
-                                    Colors.white.withValues(alpha: 0.05),
-                                  ],
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: Colors.white.withValues(alpha: 0.3),
+                                    width: 1.5,
+                                  ),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Colors.white.withValues(alpha: 0.15),
+                                      Colors.white.withValues(alpha: 0.05),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextFormFieldWidget(
-                                    hintText: "Name",
-                                    controller: _nameController,
-                                    prefixIcon: Icons.person,
-                                  ),
-                                  SizedBox(height: 25),
-                                  //Nhập EMAIL
-                                  TextFormFieldWidget(
-                                    hintText: "E-mail",
-                                    controller: _emailController,
-                                    prefixIcon: Icons.email_outlined,
-                                    keyboardType: TextInputType.emailAddress,
-                                  ),
-                                  SizedBox(height: 25),
-                                  //Nhập Password
-                                  TextFormFieldWidget(
-                                    hintText: "Password",
-                                    controller: _passwordController,
-                                    prefixIcon: Icons.lock_outline,
-                                    isPassword: true,
-                                  ),
-                                  SizedBox(height: 25),
-                                  TextFormFieldWidget(
-                                    hintText: "Comfirm Password",
-                                    controller: _confirmPasswordController,
-                                    prefixIcon: Icons.lock_open_rounded,
-                                    isPassword: true,
-                                  ),
-                                  SizedBox(height: 30),
-                                  //Nút Sign Up
-                                  GestureDetector(
-                                    onTap: state is AuthLoading
-                                        ? null
-                                        : () {
-                                            final name = _nameController.text
-                                                .trim();
-                                            final email = _emailController.text
-                                                .trim();
-                                            final pass = _passwordController
-                                                .text
-                                                .trim();
-                                            final confirmPassword =
-                                                _confirmPasswordController.text
-                                                    .trim();
-                                            //
-                                            if (name.isEmpty ||
-                                                email.isEmpty ||
-                                                pass.isEmpty) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    "Vui Lòng Nhập Thông Tin Đầy Đủ",
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    TextFormFieldWidget(
+                                      hintText: "Name",
+                                      controller: _nameController,
+                                      prefixIcon: Icons.person,
+                                    ),
+                                    SizedBox(height: 25),
+                                    //Nhập EMAIL
+                                    TextFormFieldWidget(
+                                      hintText: "E-mail",
+                                      controller: _emailController,
+                                      prefixIcon: Icons.email_outlined,
+                                      keyboardType: TextInputType.emailAddress,
+                                    ),
+                                    SizedBox(height: 25),
+                                    //Nhập Password
+                                    TextFormFieldWidget(
+                                      hintText: "Password",
+                                      controller: _passwordController,
+                                      prefixIcon: Icons.lock_outline,
+                                      isPassword: true,
+                                    ),
+                                    SizedBox(height: 25),
+                                    TextFormFieldWidget(
+                                      hintText: "Comfirm Password",
+                                      controller: _confirmPasswordController,
+                                      prefixIcon: Icons.lock_open_rounded,
+                                      isPassword: true,
+                                    ),
+                                    SizedBox(height: 30),
+                                    //Nút Sign Up
+                                    GestureDetector(
+                                      onTap: state is AuthLoading
+                                          ? null
+                                          : () {
+                                              final name = _nameController.text
+                                                  .trim();
+                                              final email = _emailController
+                                                  .text
+                                                  .trim();
+                                              final pass = _passwordController
+                                                  .text
+                                                  .trim();
+                                              final confirmPassword =
+                                                  _confirmPasswordController
+                                                      .text
+                                                      .trim();
+                                              //
+                                              if (name.isEmpty ||
+                                                  email.isEmpty ||
+                                                  pass.isEmpty) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      "Vui Lòng Nhập Thông Tin Đầy Đủ",
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                              return;
-                                            }
-                                            if (pass != confirmPassword) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    "Mật Khẩu Xác Nhận Chưa Khớp !",
+                                                );
+                                                return;
+                                              }
+                                              if (pass != confirmPassword) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      "Mật Khẩu Xác Nhận Chưa Khớp !",
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                              return;
-                                            }
-                                            context.read<AuthCubit>().register(
-                                              email,
-                                              pass,
-                                              name,
-                                            );
-                                          },
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 55,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFEC5353),
-                                        borderRadius: BorderRadius.circular(15),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color(
-                                              0xFFEC5353,
-                                            ).withValues(alpha: 0.5),
-                                            blurRadius: 20,
-                                            offset: Offset(0, 10),
+                                                );
+                                                return;
+                                              }
+                                              context
+                                                  .read<AuthCubit>()
+                                                  .register(email, pass, name);
+                                            },
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFFEC5353),
+                                          borderRadius: BorderRadius.circular(
+                                            15,
                                           ),
-                                        ],
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "SIGN UP",
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(
+                                                0xFFEC5353,
+                                              ).withValues(alpha: 0.5),
+                                              blurRadius: 20,
+                                              offset: Offset(0, 10),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "SIGN UP",
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -253,6 +258,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 30),
                     ],
                   ),
                 ),

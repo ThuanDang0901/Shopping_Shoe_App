@@ -1,5 +1,7 @@
 import 'package:application_shoe_ecommerce/module/presentation/cubit/auth_cubit.dart';
 import 'package:application_shoe_ecommerce/module/presentation/screen/login_creen/login_screen.dart';
+import 'package:application_shoe_ecommerce/module/presentation/screen/order_screen/order_screen.dart';
+import 'package:application_shoe_ecommerce/module/presentation/widget/list_options_widget.dart';
 import 'package:application_shoe_ecommerce/module/resources/app_color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -101,10 +103,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0,
         toolbarHeight: 65,
         backgroundColor: AppColors.primaryRed,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: Colors.white),
-          onPressed: () {},
-        ),
         title: Text(
           "MY PROFILE",
           style: GoogleFonts.playfairDisplay(
@@ -195,251 +193,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               // ---- 4. KHU VỰC DANH SÁCH MENU TÙY CHỌN (LIST OPTIONS) ----
               // Hàng 1: My Orders
-              Container(
-                margin: const EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Colors.grey.shade100),
-                ),
-                child: ListTile(
-                  onTap: () {},
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  leading: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.local_shipping_outlined,
-                      color: AppColors.primaryRed,
-                      size: 22,
-                    ),
-                  ),
-                  title: Text(
-                    "My Orders",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "Track, return, or buy again",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.grey.shade400,
-                    size: 14,
-                  ),
-                ),
+              ListOptionsWidget(
+                leadingIcon: Icons.local_shipping_outlined,
+                title: "My Order",
+                subtitle: "Track, return, or buy again",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OrderScreen()),
+                  );
+                },
               ),
 
               // Hàng 2: Shipping Addresses
-              Container(
-                margin: const EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Colors.grey.shade100),
-                ),
-                child: ListTile(
-                  onTap: () {},
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  leading: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.location_on_outlined,
-                      color: AppColors.primaryRed,
-                      size: 22,
-                    ),
-                  ),
-                  title: Text(
-                    "Shipping Addresses",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "3 addresses saved",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.grey.shade400,
-                    size: 14,
-                  ),
-                ),
+              ListOptionsWidget(
+                leadingIcon: Icons.location_on_outlined,
+                title: "Shipping Addresses",
+                subtitle: "3 addresses saved",
+                onTap: () {},
               ),
-
-              // Hàng 3: Payment Methods
-              Container(
-                margin: const EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Colors.grey.shade100),
-                ),
-                child: ListTile(
-                  onTap: () {},
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  leading: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.credit_card_outlined,
-                      color: AppColors.primaryRed,
-                      size: 22,
-                    ),
-                  ),
-                  title: Text(
-                    "Payment Methods",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "Visa **3456",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.grey.shade400,
-                    size: 14,
-                  ),
-                ),
+              // Hàng 3: Setting
+              ListOptionsWidget(
+                leadingIcon: Icons.settings_outlined,
+                title: "Setting",
+                subtitle: "All Setting For The App",
+                onTap: () {},
               ),
-
               // Hàng 4: Notifications
-              Container(
-                margin: const EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Colors.grey.shade100),
-                ),
-                child: ListTile(
-                  onTap: () {},
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  leading: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.notifications_none_rounded,
-                      color: AppColors.primaryRed,
-                      size: 22,
-                    ),
-                  ),
-                  title: Text(
-                    "Notifications",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "Turn on/off push alerts",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.grey.shade400,
-                    size: 14,
-                  ),
-                ),
+              ListOptionsWidget(
+                leadingIcon: Icons.notifications_none_rounded,
+                title: "Notifications",
+                subtitle: "Turn on/off push alerts",
+                onTap: () {},
               ),
-
               // Hàng 5: Help & Support
-              Container(
-                margin: const EdgeInsets.only(bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: Colors.grey.shade100),
-                ),
-                child: ListTile(
-                  onTap: () {},
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 4,
-                  ),
-                  leading: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.help_outline_rounded,
-                      color: AppColors.primaryRed,
-                      size: 22,
-                    ),
-                  ),
-                  title: Text(
-                    "Help & Support",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "FAQ and customer service",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      color: Colors.grey.shade400,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.grey.shade400,
-                    size: 14,
-                  ),
-                ),
+              ListOptionsWidget(
+                leadingIcon: Icons.help_outline_rounded,
+                title: "Hepl & Support",
+                subtitle: "FAQ and customer service",
+                onTap: () {},
               ),
-              const SizedBox(height: 25),
 
+              const SizedBox(height: 25),
               // ---- 5. NÚT ĐĂNG XUẤT (LOG OUT) ----
               SizedBox(
                 width: double.infinity,
@@ -456,7 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: AppColors.primaryRed, // Màu hồng đỏ nhạt
+                    backgroundColor: AppColors.primaryRed,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),

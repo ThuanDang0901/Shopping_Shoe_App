@@ -38,32 +38,10 @@ class _SearchscreenState extends State<Searchscreen> {
           children: [
             const SizedBox(height: 15),
 
-            // ---- 1. KHU VỰC THANH TÌM KIẾM VÀ NÚT FILTER THEO ẢNH MẪU ----
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
-                  // Nút Back mũi tên tròn bên trái
-                  GestureDetector(
-                    onTap: () {
-                      // Xử lý sự kiện back nếu cần
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back_rounded,
-                        color: Colors.black87,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-
-                  // Thanh Tìm Kiếm Ô Nhập (TextField) bọc trong khung xám nhạt bo góc
                   Expanded(
                     child: Container(
                       height: 48,
@@ -193,10 +171,9 @@ class _SearchscreenState extends State<Searchscreen> {
                         vertical: 5,
                       ),
                       itemCount: resultShoes.length,
-                      gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio:
-                            0.76, // Tỉ lệ chiều cao thon dài giống ảnh mẫu của bạn
+                        childAspectRatio: 0.76,
                         crossAxisSpacing: 16,
                         mainAxisSpacing: 20,
                       ),

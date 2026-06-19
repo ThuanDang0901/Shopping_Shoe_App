@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:application_shoe_ecommerce/module/data/services/auth_service.dart';
 import 'package:application_shoe_ecommerce/module/domain/usecases/LoginUseCase.dart';
-import 'package:application_shoe_ecommerce/module/domain/usecases/SignUpUseCase.dart';
+import 'package:application_shoe_ecommerce/module/domain/usecases/SignupUseCase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_state.dart';
 

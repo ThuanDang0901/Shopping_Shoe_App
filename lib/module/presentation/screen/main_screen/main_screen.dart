@@ -259,14 +259,13 @@ class _MainScreenState extends State<MainScreen> {
                       itemCount: featuredShoes.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 1,
-                        crossAxisSpacing: 10,
+                        crossAxisSpacing: 0,
                         mainAxisSpacing: 16,
                       ),
                       itemBuilder: (context, index) {
                         final shoe = featuredShoes[index];
                         return Padding(
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.white,

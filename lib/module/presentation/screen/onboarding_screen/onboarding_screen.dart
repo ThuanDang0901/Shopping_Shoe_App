@@ -93,7 +93,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           ),
                           child: Image.asset(
                             "assets/img/vdvcn.png",
-                            fit: BoxFit.cover,
+                            // fit: BoxFit.cover,
+                            scale: 0.1,
                           ),
                         ),
                       ),

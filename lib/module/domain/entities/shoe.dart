@@ -28,4 +28,12 @@ class Shoe {
     required this.sizes,
     this.isFavorite = false,
   });
+
+  bool hasEnoughStock(int requestedQuantity) {
+    return stockQuantity >= requestedQuantity;
+  }
+
+  int calculateRemainingStock(int requestedQuantity) {
+    return stockQuantity - requestedQuantity;
+  }
 }

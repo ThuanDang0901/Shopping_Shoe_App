@@ -17,11 +17,12 @@ class CartRepositoryImpl implements CartRepository {
 
       return snapshot.docs.map((doc) {
         final data = doc.data();
-        final shoe = ShoeModel.fromMap(data['shoe'], data['shoeId']);
+        final shoeModel = ShoeModel.fromMap(data['shoe'], data['shoeId']);
 
         return CartItem(
           id: doc.id,
-          shoe: shoe,
+          shoe: shoeModel.toEntity(),
+          variantId: data['variantId'] ?? '',
           selectedColor: data['selectedColor'] ?? '',
           selectedSize: data['selectedSize'] ?? 0,
           quantity: data['quantity'] ?? 1,
@@ -39,8 +40,6 @@ class CartRepositoryImpl implements CartRepository {
           .collection('users')
           .doc(userId)
           .collection('cart');
-
-      // Tìm xem sản phẩm cùng màu, cùng size đã tồn tại chưa
       final existingQuery = await cartRef
           .where('shoeId', isEqualTo: cartItem.shoe.id)
           .where('selectedColor', isEqualTo: cartItem.selectedColor)
@@ -55,9 +54,9 @@ class CartRepositoryImpl implements CartRepository {
           'quantity': currentQty + cartItem.quantity,
         });
       } else {
-        // Thêm mới sản phẩm vào giỏ hàng
         await cartRef.add({
           'shoeId': cartItem.shoe.id,
+          'variantId': cartItem.variantId,
           'selectedColor': cartItem.selectedColor,
           'selectedSize': cartItem.selectedSize,
           'quantity': cartItem.quantity,

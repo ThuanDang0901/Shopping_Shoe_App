@@ -153,7 +153,7 @@ class _VerifyAccountState extends State<VerifyAccount> {
 
                                   // Ô nhập mã xác thực
                                   TextFormFieldWidget(
-                                    hintText: "Verification Code",
+                                    hintText: "   ",
                                     controller: _otpController,
                                     prefixIcon: Icons.mail_outline_outlined,
                                   ),

@@ -1,4 +1,3 @@
-import 'package:application_shoe_ecommerce/module/domain/entities/cart_Item.dart';
 import 'package:application_shoe_ecommerce/module/domain/entities/shoe.dart';
 import 'package:application_shoe_ecommerce/module/presentation/cubit/cart_cubit.dart';
 import 'package:application_shoe_ecommerce/module/presentation/cubit/wishlist_cubit.dart';
@@ -130,7 +129,7 @@ class _DetailCreenState extends State<DetailCreen> {
                           builder: (context, state) {
                             return Material(
                               color: Colors.white,
-                              shape: CircleBorder(),
+                              shape: const CircleBorder(),
                               elevation: 2,
                               shadowColor: Colors.black.withValues(alpha: 0.3),
                               child: IconButton(
@@ -184,46 +183,51 @@ class _DetailCreenState extends State<DetailCreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: List.generate(shoeColors.length, (index) {
-                        bool isSelected = _selectedColorIndex == index;
-                        Color currentColor = ColorUtils.hexToColor(
-                          shoeColors[index],
-                        );
-                        return GestureDetector(
-                          onTap: () =>
-                              setState(() => _selectedColorIndex = index),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            margin: const EdgeInsets.only(right: 14),
-                            padding: const EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: isSelected
-                                    ? currentColor
-                                    : Colors.transparent,
-                                width: 2,
-                              ),
-                            ),
-                            child: Container(
-                              width: 30,
-                              height: 30,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(shoeColors.length, (index) {
+                          bool isSelected = _selectedColorIndex == index;
+                          Color currentColor = ColorUtils.hexToColor(
+                            shoeColors[index],
+                          );
+                          return GestureDetector(
+                            onTap: () =>
+                                setState(() => _selectedColorIndex = index),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              margin: const EdgeInsets.only(right: 14),
+                              padding: const EdgeInsets.all(3),
                               decoration: BoxDecoration(
-                                color: currentColor,
                                 shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.1),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
+                                border: Border.all(
+                                  color: isSelected
+                                      ? currentColor
+                                      : Colors.transparent,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color: currentColor,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.1,
+                                      ),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                     ),
                     const SizedBox(height: 25),
                     Text(
@@ -378,6 +382,7 @@ class _DetailCreenState extends State<DetailCreen> {
                     final int chosenSize = sizeShoes.isNotEmpty
                         ? sizeShoes[_selectedSizeIndex]
                         : 0;
+
                     if (user == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -389,17 +394,22 @@ class _DetailCreenState extends State<DetailCreen> {
                       );
                       return;
                     }
-                    context.read<CartCubit>().addItemToCart(
+
+                    final String variantId = "${chosenColor}_$chosenSize";
+
+                    context.read<CartCubit>().addToCart(
                       userId: user.uid,
                       shoe: widget.shoe,
-                      chosenColor: chosenColor,
-                      chosenSize: chosenSize,
+                      variantId: variantId,
+                      selectedColor: chosenColor,
+                      selectedSize: chosenSize,
                       quantity: _quantity,
                     );
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          "Đã thêm ${_quantity}x ${widget.shoe.name} vào giỏ hàng thành công!",
+                          "Đã thêm ${_quantity}x ${widget.shoe.name} vào giỏ hàng!",
                         ),
                         backgroundColor: Colors.green,
                         duration: const Duration(seconds: 2),
